@@ -44,7 +44,7 @@ function game() {
     }
     if (playerWins > compWins) {
         console.log("You Win!");
-    } else if (playerWins > compWins) {
+    } else if (playerWins < compWins) {
         console.log("GAME OVER!");
     } else {
         console.log("DRAW!");
