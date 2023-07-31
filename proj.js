@@ -5,65 +5,43 @@ const container = document.querySelector('body');
 const scoreboard = document.querySelector('.score');
 const playerScore = document.querySelector('#player');
 const compScore = document.querySelector('#computer');
+const choices = document.querySelector('.choices');
 let gameIsOver = false;
+let globalplayer;
+let globalcomp;
 
-
-function win() {
+function capitalize(string) {//a function used to capitalize the player/comp selection
+    caps = string.slice(0, 1);
+    new_caps = caps.toUpperCase();
+    proto_rest_of_string = string.slice(1);
+    rest_of_string = proto_rest_of_string.toLowerCase();
+    return (final = new_caps + rest_of_string);
+}
+function win() {//the page change results of a win
     playerWins++;
+    playerchoice.textContent = capitalize(globalplayer);
+    compchoice.textContent = capitalize(globalcomp);
     playerScore.textContent = playerWins;
     result.style['margin-top'] = '3%';
     result.style['font-size'] = '22px';
 }
-function lose() {
+function lose() {//the page change results of a loss
     compWins++;
+    playerchoice.textContent = capitalize(globalplayer);
+    compchoice.textContent = capitalize(globalcomp);
     compScore.textContent = compWins;
     result.style['margin-top'] = '3%';
     result.style['font-size'] = '22px';
 }
-function draw() {
+function draw() { //the page change results of a draw
     console.log("draw");
+    playerchoice.textContent = capitalize(globalplayer);
+    compchoice.textContent = capitalize(globalcomp);
     result.textContent = "It's a Tie!";
     result.style['margin-top'] = '3%';
     result.style['font-size'] = '22px';
 }
-let playerWins = 0;
-let compWins = 0;
-let result = document.createElement('div');
-result.textContent = '';
-container.appendChild(result);
-function singleRound(playerSelection) {
-    const computerSelection = getComputerChoice();
-    while (compWins < 5 && playerWins < 5) {
-        if (playerSelection == "rock" && computerSelection == "paper") {
-            lose();
-            result.textContent = "You lose! Paper beats rock";
-            return;
-        } else if (playerSelection == "scissors" && computerSelection == "paper") {
-            win();
-            result.textContent = "You win! Scissors beats paper";
-            return;
-        } else if (playerSelection == "paper" && computerSelection == "scissors") {
-            lose();
-            result.textContent = "You lose! Scissors beats paper";
-            return;
-        } else if (playerSelection == "scissors" && computerSelection == "rock") {
-            lose();
-            result.textContent = "You lose! Rock beats scissors";
-            return;
-        } else if (playerSelection == "rock" && computerSelection == "scissors") {
-            win();
-            result.textContent = "You win! Rock beats scissors";
-            return;
-        } else if (playerSelection == "paper" && computerSelection == "rock") {
-            win();
-            result.textContent = "You win! Rock beats paper";
-            return;
-        } else {
-            draw();
-            return;
-        }
-    
-    }
+function endGame() { //creates an end game page for the result of the match
     if (compWins == 5 || playerWins == 5) {
         gameIsOver = true;
         container.textContent = '';
@@ -81,10 +59,60 @@ function singleRound(playerSelection) {
     } else {
         gameIsOver = false;
     }
+}
+let playerWins = 0; //sets the initiator for the while loop
+let compWins = 0;
+let playerchoice = document.createElement('li');//creates a div for the player weapon choice
+playerchoice.textContent = '';
+playerchoice.style['font-size'] = '18px';
+let compchoice = document.createElement('li');//creates a div for the computer weapon choice
+compchoice.textContent = '';
+compchoice.style['font-size'] = '18px';
+choices.appendChild(playerchoice);
+choices.appendChild(compchoice);
+let result = document.createElement('div');//creates a div for the result message of the round
+result.textContent = '';
+container.appendChild(result);
+function singleRound(playerSelection) {
+    const computerSelection = getComputerChoice();//assigns random value to computerSelection
+    while (compWins < 5 && playerWins < 5) {
+        globalplayer = playerSelection; //allows parameters to have global values so it can be selected in other functions
+        globalcomp = computerSelection;
+        //all the different conditions for wins, losses, and draws
+        if (playerSelection == "rock" && computerSelection == "paper") {
+            lose();
+            result.textContent = "You lose! If only you had a diamond sword";
+            return;
+        } else if (playerSelection == "scissors" && computerSelection == "paper") {
+            win();
+            result.textContent = "You win! Those are some sharp shears you got";
+            return;
+        } else if (playerSelection == "paper" && computerSelection == "scissors") {
+            lose();
+            result.textContent = "You lose! Are you trying paper cut your opponent??";
+            return;
+        } else if (playerSelection == "scissors" && computerSelection == "rock") {
+            lose();
+            result.textContent = "You lose! You'll need diamond shears to cut diamond";
+            return;
+        } else if (playerSelection == "rock" && computerSelection == "scissors") {
+            win();
+            result.textContent = "You win! The computer's shears shattered upon impact";
+            return;
+        } else if (playerSelection == "paper" && computerSelection == "rock") {
+            win();
+            result.textContent = "You win! You paper cut your opponent and stole their diamonds";
+            return;
+        } else {
+            draw();
+            return;
+        }
     
+    }
+    setTimeout(endGame, 2000);//makes end game screen popup after 2 sec
 }
 
-function main() {
+function main() {//the function that kicks off from the click of the options
     rock.addEventListener('click', function() {
         singleRound("rock");
     })
@@ -95,8 +123,8 @@ function main() {
         singleRound('scissors');
     })
 }
-main();
-function getComputerChoice() {
+main();//activates the functionality of the clicking to start the game
+function getComputerChoice() {//generates a random option from rock paper and scissors
     let options = ["rock", "paper", "scissors"];
     let shuffle = Math.floor(Math.random() * options.length);
     return options[shuffle];
