@@ -47,14 +47,17 @@ function endGame() { //creates an end game page for the result of the match
         container.textContent = '';
         console.log(compWins, playerWins);
         let finalMessage = document.createElement('div');
+        let finalScore = document.createElement('div');
+        finalScore.classList.add('finalscore');
+        finalScore.textContent = `${playerWins} - ${compWins}`;
+        container.appendChild(finalMessage);
+        container.appendChild(finalScore);
         if (playerWins > compWins) {
             finalMessage.textContent = "YOU WIN!!"
             finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
-            container.appendChild(finalMessage);
         } else if (compWins > playerWins) {
             finalMessage.textContent = "GAME OVER"
             finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
-            container.appendChild(finalMessage);
         }
     } else {
         gameIsOver = false;
@@ -109,7 +112,7 @@ function singleRound(playerSelection) {
         }
     
     }
-    setTimeout(endGame, 2000);//makes end game screen popup after 2 sec
+    setTimeout(endGame, 1000);//makes end game screen popup after 2 sec
 }
 
 function main() {//the function that kicks off from the click of the options

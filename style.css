@@ -80,3 +80,7 @@ ul.choices {
 .weaponBox .weapon.scissors {
     padding: 15px;
 }
+div.finalscore {
+    font-size: 45px;
+    margin-top: 1%;
+}
