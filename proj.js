@@ -34,34 +34,35 @@ function lose() {//the page change results of a loss
     result.style['font-size'] = '22px';
 }
 function draw() { //the page change results of a draw
-    console.log("draw");
     playerchoice.textContent = capitalize(globalplayer);
     compchoice.textContent = capitalize(globalcomp);
     result.textContent = "It's a Tie!";
     result.style['margin-top'] = '3%';
     result.style['font-size'] = '22px';
 }
-function endGame() { //creates an end game page for the result of the match
-    if (compWins == 5 || playerWins == 5) {
-        gameIsOver = true;
-        container.textContent = '';
-        console.log(compWins, playerWins);
-        let finalMessage = document.createElement('div');
-        let finalScore = document.createElement('div');
-        finalScore.classList.add('finalscore');
-        finalScore.textContent = `${playerWins} - ${compWins}`;
-        container.appendChild(finalMessage);
-        container.appendChild(finalScore);
-        if (playerWins > compWins) {
-            finalMessage.textContent = "YOU WIN!!"
-            finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
-        } else if (compWins > playerWins) {
-            finalMessage.textContent = "GAME OVER"
-            finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
+function endGame() {
+    setTimeout(function() {
+        if (compWins == 5 || playerWins == 5) {
+            gameIsOver = true;
+            container.textContent = '';
+            console.log(compWins, playerWins);
+            let finalMessage = document.createElement('div');
+            let finalScore = document.createElement('div');
+            finalScore.classList.add('finalscore');
+            finalScore.textContent = `${playerWins} - ${compWins}`;
+            container.appendChild(finalMessage);
+            container.appendChild(finalScore);
+            if (playerWins > compWins) {
+                finalMessage.textContent = "YOU WIN!!"
+                finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
+            } else if (compWins > playerWins) {
+                finalMessage.textContent = "GAME OVER"
+                finalMessage.setAttribute('style', 'font-size: 55px; margin-top: 20%; font-weight: 800;');
+            }
+        } else {
+            gameIsOver = false;
         }
-    } else {
-        gameIsOver = false;
-    }
+    }, 2000);
 }
 let playerWins = 0; //sets the initiator for the while loop
 let compWins = 0;
@@ -77,10 +78,14 @@ let result = document.createElement('div');//creates a div for the result messag
 result.textContent = '';
 container.appendChild(result);
 function singleRound(playerSelection) {
-    const computerSelection = getComputerChoice();//assigns random value to computerSelection
-    while (compWins < 5 && playerWins < 5) {
+    const computerSelection = getComputerChoice();
+    //setTimeout(endGame, 2000);//assigns random value to computerSelection
+    while (!(compWins == 5 || playerWins == 5)) {
+        endGame();
+        gameIsOver = false;
         globalplayer = playerSelection; //allows parameters to have global values so it can be selected in other functions
         globalcomp = computerSelection;
+        
         //all the different conditions for wins, losses, and draws
         if (playerSelection == "rock" && computerSelection == "paper") {
             lose();
@@ -110,10 +115,9 @@ function singleRound(playerSelection) {
             draw();
             return;
         }
-    
     }
-    setTimeout(endGame, 1000);//makes end game screen popup after 2 sec
 }
+    //setTimeout(endGame, 3000);//makes end game screen popup after 2 sec
 
 function main() {//the function that kicks off from the click of the options
     rock.addEventListener('click', function() {
@@ -125,6 +129,7 @@ function main() {//the function that kicks off from the click of the options
     scissors.addEventListener('click', function() {
         singleRound('scissors');
     })
+    
 }
 main();//activates the functionality of the clicking to start the game
 function getComputerChoice() {//generates a random option from rock paper and scissors
